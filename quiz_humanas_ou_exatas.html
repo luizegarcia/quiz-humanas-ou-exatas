@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7865d8">
+<title>Qual área combina com você?</title>
+<style>
+:root{--ink:#24213b;--muted:#77738d;--purple:#7865d8;--pink:#f3a6c8;--blue:#9cc9f5;--paper:#fbfaff;--line:#ece9f5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 8% 5%,#fce8f2 0,transparent 30%),radial-gradient(circle at 95% 90%,#e5f2ff 0,transparent 34%),var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);min-height:100vh;padding:24px 16px}
+main{max-width:720px;margin:0 auto}.top{display:flex;justify-content:space-between;align-items:center;margin:4px 0 24px}.brand{font-weight:850;letter-spacing:-.04em;font-size:17px}.brand span{color:var(--purple)}.tag{font-size:12px;color:#6555bd;background:#eeeaff;padding:8px 12px;border-radius:99px;font-weight:700}
+.card{background:#fff;border:1px solid #f0edf7;border-radius:28px;padding:clamp(22px,5vw,42px);box-shadow:0 18px 55px #51428b12}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.13em;color:var(--purple);font-weight:850}
+h1{font-size:clamp(32px,7vw,54px);line-height:1.02;letter-spacing:-.055em;margin:14px 0}h1 em{font-style:normal;color:var(--purple)}
+p{color:var(--muted);line-height:1.6}.intro p{font-size:16px;max-width:520px}.spark{font-size:42px;margin-bottom:12px}
+button{font:inherit;cursor:pointer}.primary{border:0;background:linear-gradient(110deg,#7865d8,#9b7be8);color:#fff;padding:15px 22px;border-radius:15px;font-weight:800;box-shadow:0 9px 20px #7865d833}.primary:hover{filter:brightness(1.04);transform:translateY(-1px)}
+.progressline{height:7px;background:#f0eef7;border-radius:99px;overflow:hidden;margin:4px 0 25px}.progressline div{height:100%;width:0;background:linear-gradient(90deg,#7865d8,#f0a5c8);transition:width .25s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:12px}
+.question{font-size:clamp(22px,5vw,30px);line-height:1.2;letter-spacing:-.035em;margin:0 0 22px}
+.options{display:grid;gap:11px}.option{display:flex;align-items:center;gap:13px;text-align:left;width:100%;padding:16px;border:1.5px solid var(--line);background:#fff;border-radius:16px;color:var(--ink);font-weight:650;line-height:1.35;transition:.15s}.option:hover{border-color:#b9adef;background:#fbf9ff}.option.selected{border-color:var(--purple);background:#f4f0ff;box-shadow:0 0 0 3px #7865d81a}.letter{width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;border-radius:10px;background:#f0edfb;color:#6d5acb;font-size:13px;font-weight:850}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:25px;gap:12px}.back{border:0;background:transparent;color:var(--muted);font-weight:700;padding:12px}
+.result{text-align:center}.result-icon{font-size:54px}.result h2{font-size:clamp(28px,6vw,42px);letter-spacing:-.045em;margin:10px 0}.result .lead{max-width:520px;margin:0 auto 22px}.pill{display:inline-block;background:#f0edff;color:#6755c4;border-radius:99px;padding:8px 13px;font-size:12px;font-weight:850;margin:4px}.coursebox{text-align:left;background:#faf9ff;border:1px solid var(--line);padding:18px;border-radius:18px;margin:18px 0}.coursebox h3{margin:0 0 9px;font-size:16px}.coursebox ul{padding-left:20px;margin:8px 0;color:#5e5a72;line-height:1.8}.note{font-size:12px;color:#8a8699;margin-top:18px}.hidden{display:none!important}
+@media(max-width:480px){body{padding:14px 12px}.top{margin-bottom:16px}.card{border-radius:23px}.actions .primary{padding:14px 17px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><div class="brand">bússola<span>.</span></div><div class="tag">TESTE DE AFINIDADE ✦</div></div>
+  <section class="card intro" id="start">
+    <div class="spark">🧭</div><div class="eyebrow">seu próximo capítulo começa aqui</div>
+    <h1>Humanas ou <em>Exatas?</em></h1>
+    <p>Responda a 5 perguntinhas sobre seus interesses e descubra quais áreas podem combinar com você. Não existe resposta certa — escolha o que mais tem a ver com você!</p>
+    <button class="primary" id="begin">começar o quiz →</button>
+    <p class="note">Leva cerca de 2 minutos · Resultado na hora</p>
+  </section>
+
+  <section class="card hidden" id="quiz">
+    <div class="meta"><span id="counter">PERGUNTA 1 DE 5</span><span id="percent">20%</span></div>
+    <div class="progressline"><div id="bar"></div></div>
+    <h2 class="question" id="question"></h2>
+    <div class="options" id="options"></div>
+    <div class="actions"><button class="back" id="back">← voltar</button><button class="primary" id="next" disabled>próxima →</button></div>
+  </section>
+
+  <section class="card result hidden" id="result">
+    <div class="result-icon" id="resultIcon">✨</div>
+    <div class="eyebrow">seu resultado</div>
+    <h2 id="resultTitle"></h2>
+    <p class="lead" id="resultText"></p>
+    <div id="courses"></div>
+    <p class="note">Este teste é um ponto de partida para explorar possibilidades, não um diagnóstico vocacional. Considere também a rotina dos cursos, suas habilidades e os caminhos profissionais.</p>
+    <button class="primary" id="restart">refazer o quiz ↻</button>
+  </section>
+</main>
+<script>
+const questions=[
+ {q:"Quando você tem um tempo livre, qual assunto desperta mais sua curiosidade?",a:[
+  ["Entender comportamentos, sentimentos e relações entre pessoas","H"],
+  ["Desvendar enigmas, padrões e desafios de lógica","E"],
+  ["Conhecer culturas, acontecimentos e diferentes ideias","H"],
+  ["Descobrir como tecnologias, máquinas e sistemas funcionam","E"]]},
+ {q:"Em um trabalho em grupo, qual tarefa você escolheria?",a:[
+  ["Organizar o debate e apresentar os argumentos","H"],
+  ["Analisar números, gráficos e resultados","E"],
+  ["Pesquisar questões sociais e construir uma reflexão","H"],
+  ["Planejar um protótipo ou testar uma solução","E"]]},
+ {q:"Qual problema você teria mais vontade de ajudar a resolver?",a:[
+  ["Desigualdade, preconceito e falta de acesso a direitos","H"],
+  ["Desafios de engenharia, energia e infraestrutura","E"],
+  ["Conflitos nas relações e dificuldades de aprendizagem","H"],
+  ["Criação de tecnologias e soluções para problemas técnicos","E"]]},
+ {q:"Qual atividade parece mais interessante para você?",a:[
+  ["Ouvir pessoas, compreender suas histórias e orientá-las","H"],
+  ["Fazer cálculos e encontrar a resposta de um problema","E"],
+  ["Escrever, argumentar e interpretar diferentes pontos de vista","H"],
+  ["Fazer experimentos, programar ou construir projetos","E"]]},
+ {q:"O que você gostaria de encontrar na sua futura profissão?",a:[
+  ["Contato com pessoas e impacto social","H"],
+  ["Desafios lógicos e soluções concretas","E"],
+  ["Comunicação, investigação e compreensão da sociedade","H"],
+  ["Inovação, tecnologia e desenvolvimento de projetos","E"]]}
+];
+let current=0,answers=[];
+const $=id=>document.getElementById(id);
+function showQuestion(){
+ const item=questions[current];$("counter").textContent=`PERGUNTA ${current+1} DE 5`;$("percent").textContent=`${(current+1)*20}%`;$("bar").style.width=`${(current+1)*20}%`;$("question").textContent=item.q;$("options").innerHTML="";
+ item.a.forEach((a,i)=>{const b=document.createElement("button");b.className="option"+(answers[current]===i?" selected":"");b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span><span>${a[0]}</span>`;b.onclick=()=>{answers[current]=i;showQuestion()};$("options").appendChild(b)});
+ $("next").disabled=answers[current]===undefined;$("next").textContent=current===4?"ver meu resultado ✨":"próxima →";$("back").style.visibility=current===0?"hidden":"visible";
+}
+$("begin").onclick=()=>{$("start").classList.add("hidden");$("quiz").classList.remove("hidden");showQuestion()};
+$("back").onclick=()=>{if(current>0){current--;showQuestion()}};
+$("next").onclick=()=>{if(answers[current]===undefined)return;if(current<4){current++;showQuestion()}else showResult()};
+function showResult(){
+ let h=0,e=0;answers.forEach((v,i)=>questions[i].a[v][1]==="H"?h++:e++);
+ $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
+ let title,text,icon,blocks=[];
+ if(h>=4){title="Humanas tem a sua cara!";icon="💜";text="Suas escolhas mostram maior afinidade com pessoas, sociedade, comunicação e comportamento. Vale explorar cursos que envolvam relações humanas e reflexão crítica.";blocks=[["Cursos para conhecer",["Psicologia","Direito","Pedagogia","Jornalismo","Ciências Sociais","História"]]]}
+ else if(e>=4){title="Exatas combina com você!";icon="💙";text="Suas escolhas mostram maior afinidade com lógica, investigação, números e criação de soluções. Vale explorar cursos que envolvam análise, ciência e tecnologia.";blocks=[["Cursos para conhecer",["Engenharia","Ciência da Computação","Sistemas de Informação","Matemática","Física","Estatística"]]]}
+ else{title="Você tem um perfil misto!";icon="💗";text="Suas escolhas mostram interesses nas duas áreas. Isso pode abrir caminhos interdisciplinares e cursos que unem pessoas, ciência, criatividade e tecnologia.";blocks=[["Humanas",["Psicologia","Economia","Design","Direito"]],["Exatas e áreas interdisciplinares",["Arquitetura e Urbanismo","Engenharias","Ciência de Dados","Biomedicina"]]]}
+ $("resultIcon").textContent=icon;$("resultTitle").textContent=title;$("resultText").textContent=text;$("courses").innerHTML="";
+ blocks.forEach(([heading,items])=>{const d=document.createElement("div");d.className="coursebox";const h3=document.createElement("h3");h3.textContent=heading;const ul=document.createElement("ul");items.forEach(x=>{const li=document.createElement("li");li.textContent=x;ul.appendChild(li)});d.append(h3,ul);$("courses").appendChild(d)});
+}
+$("restart").onclick=()=>{answers=[];current=0;$("result").classList.add("hidden");$("start").classList.remove("hidden")};
+</script>
+</body>
+</html>
